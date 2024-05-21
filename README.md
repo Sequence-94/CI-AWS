@@ -1,4 +1,4 @@
-
+![Screen Shot 2024-05-21 at 16 38](https://github.com/Sequence-94/CI-AWS/assets/53806574/724a6098-f77e-421f-8de2-8fb026d26229)
 ![Continous Integration On AWS Cloud](https://github.com/Sequence-94/CI-AWS/assets/53806574/9f4171fc-9b17-411a-bcfe-ad3b5d038c39)
 
 
@@ -108,7 +108,17 @@ I then switched to "security credentials" tab in order to create a security acce
   		"ssh -v git-codecommit.us-east-1.amazonaws.com"
     		For exmaple I can see which keys are being used, the config file being used.
 
-		put source code from github repo to codecommit repo and push
+		Push source code from github repo to codecommit repo and push:
+  		First I cloned the github repo to my local desktop:
+![Screen Shot 2024-05-21 at 16 32](https://github.com/Sequence-94/CI-AWS/assets/53806574/3ac098c3-3c59-4fee-82ca-d7639b5ce4fc)
+   
+I then removed the [remote "origin"] from github and relaced it with the one given to me in Clone URL -> CLone SSH in code commmit repo console.
+![Screen Shot 2024-05-21 at 16 36](https://github.com/Sequence-94/CI-AWS/assets/53806574/02c43b66-5ce7-4de1-87dd-d3ff35dbbb8a)
+
+After the "git push origin --all" command:
+![Screen Shot 2024-05-21 at 16 38](https://github.com/Sequence-94/CI-AWS/assets/53806574/d2c1aadf-c56c-45ab-8852-a37bfd01c210)
+All the files from github are now in my code commit repo
+
 
 	Code Artifcat
 		create an IAM user with code artifact access
