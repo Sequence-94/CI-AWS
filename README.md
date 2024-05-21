@@ -93,8 +93,10 @@ Here is my user with codecommit full access:
 I then switched to "security credentials" tab in order to create a security access keys for cli access. 
 ![Screen Shot 2024-05-21 at 14 58](https://github.com/Sequence-94/CI-AWS/assets/53806574/f538844f-f9d1-41a5-b2bf-911aa462dddb)
 
-		generate ssh keys locally
+		generate ssh keys locally 
 ![Screen Shot 2024-05-21 at 15 06](https://github.com/Sequence-94/CI-AWS/assets/53806574/781364e5-500c-4d86-a90d-918247bd04cf)
+		upload public ssh key into SSH public keys for AWS CodeCommit
+![Screen Shot 2024-05-21 at 15 17](https://github.com/Sequence-94/CI-AWS/assets/53806574/f6a3a127-2e40-4ef7-9ac7-d81f01178ffc)
 
 		exchange keys with IAM user
 		put source code from github repo to codecommit repo and push
