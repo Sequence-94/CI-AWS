@@ -77,9 +77,25 @@ sql dump file:
 	Login to the AWS account
 
 	Code Commit
-		create codecommit repo
-		create iam user with codecommit policy
+		create codecommit repo - Creating the code repository is fairly simple when using CodeCommit AWS Console. 
+  		I simply entered the name for the repo "vprofile-code-repo" and left evrything as default.
+![Screen Shot 2024-05-21 at 14 37](https://github.com/Sequence-94/CI-AWS/assets/53806574/133f0762-c85a-4a53-92a6-b39cb56ff2f0)
+
+		create IAM-user with codecommit policy this will allow me access into this repository locally with the correct
+  		priviledges to my codecommit repository from my computer. I chose the user-name "vprofile-code-admin" for IAM-user
+    		and chose to "attach policies directly". I specified permissions for my codecommit service and allowed all actions under the sun.
+      		I also added an ARN which was my vprofile-code-repo. So this IAM user only has access to the repo and is allowed to do anything to that specific
+		repo. I named this policy "vprofile-repo-fullAccess" and this is the policy I will attach to the IAM user.
+![Screen Shot 2024-05-21 at 14 50](https://github.com/Sequence-94/CI-AWS/assets/53806574/912fea61-7947-496e-a316-91b3b64eadfe)
+Here is my user with codecommit full access:
+![Screen Shot 2024-05-21 at 14 54](https://github.com/Sequence-94/CI-AWS/assets/53806574/d7e07669-4945-44bc-8454-0f2f5281152b)
+
+I then switched to "security credentials" tab in order to create a security access keys for cli access. 
+![Screen Shot 2024-05-21 at 14 58](https://github.com/Sequence-94/CI-AWS/assets/53806574/f538844f-f9d1-41a5-b2bf-911aa462dddb)
+
 		generate ssh keys locally
+![Screen Shot 2024-05-21 at 15 06](https://github.com/Sequence-94/CI-AWS/assets/53806574/781364e5-500c-4d86-a90d-918247bd04cf)
+
 		exchange keys with IAM user
 		put source code from github repo to codecommit repo and push
 
