@@ -98,7 +98,16 @@ I then switched to "security credentials" tab in order to create a security acce
 		upload public ssh key into SSH public keys for AWS CodeCommit
 ![Screen Shot 2024-05-21 at 15 17](https://github.com/Sequence-94/CI-AWS/assets/53806574/f6a3a127-2e40-4ef7-9ac7-d81f01178ffc)
 
-		exchange keys with IAM user
+		We need to creat an SSH Config file that essentially says that when we access our code commit repo then use 
+  		the previously generated SSH keys for access. So when we do SSH this config file will get activated , it will see
+    		that we're going to use codecommit so it will use the private ssh key we generated previously and the user id for iam
+![Screen Shot 2024-05-21 at 15 32](https://github.com/Sequence-94/CI-AWS/assets/53806574/bea3a8c1-8522-4ff0-aa57-3672cf5cffb6)
+		Testing whether the config file works and is able to authenticate us.
+![Screen Shot 2024-05-21 at 15 37](https://github.com/Sequence-94/CI-AWS/assets/53806574/f63c60bf-88cb-4fbf-900a-128b6f2b0f63)
+		Incase of any error I can run this code to troubleshoot:
+  		"ssh -v git-codecommit.us-east-1.amazonaws.com"
+    		For exmaple I can see which keys are being used, the config file being used.
+
 		put source code from github repo to codecommit repo and push
 
 	Code Artifcat
