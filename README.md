@@ -26,7 +26,7 @@ sql dump file:
 - db_backup.sql file is a mysql dump file.we have to import this dump to mysql db server
 - > mysql -u <user_name> -p accounts < db_backup.sql
 
-#Scenario :
+# Scenario :
 	Agile SDLC
 	Developers make regular code changes.
 	These commits need to be Built & Tested regularly
@@ -34,7 +34,7 @@ sql dump file:
 	Usually, Build & Release Team will do this job
 	Or in a small industry, it will be a Developers' responsibility to merge and integrate code.
 
-#Problem :
+# Problem :
 	In an Agile SDLC, there will be frequent code commits and pull requests.
 	Developers will be dependent on the Build & release team, usually to test the code and move it
 	to the next level in the release cycle, but this is not done so frequently.
@@ -44,7 +44,7 @@ sql dump file:
 	The developers will need to fix the problems as fast as its building in order to keep up, however,
 	currently, we have a Manual Build & Release process and Inter Team Dependencies(for instance approvals and authentication systems in place).
 
-#Fix:
+# Fix:
 	Build & Test For Every Commit.
 	This means that as soon as there is a code change, the code needs to be built and tested simultaneously.
 	This is not possible with the MANUAL build and release process so we need to AUTOMATE this process.
@@ -53,7 +53,7 @@ sql dump file:
 	This is called Continuous Integration Process.
 	I will use AWS Cloud Services so that I don't have to manage CI Servers myself such as Jenkins. This removes some overhead.
 
-#Benefits of Continous Integration Pipeline on AWS:
+# Benefits of Continous Integration Pipeline on AWS:
 	Short Mean Time To Repair - which leads to reduced downtime.
 	Agile - which leads to iterative development, collaboration, and flexible response to changes
 	No human intervention - which leads to speed, reduced human error, more efficiency
@@ -62,7 +62,7 @@ sql dump file:
 				 makes it easier to diagnose and fix problems.
 
 
-#AWS SERVICES:
+# AWS SERVICES:
 	Code Commit - our version control system repository, basically like GitHub
 	Code Artifact - maven will download dependencies from the code artifact repository
 	Code Build  - our build service from AWS(maven build, code analysis,sonarqube analysis)
@@ -72,7 +72,7 @@ sql dump file:
 	CODEPIPELINE - our service that integrates all jobs.
 
 
-#FLOW OF EXECUTION:
+# FLOW OF EXECUTION:
 
 	Login to the AWS account
 
