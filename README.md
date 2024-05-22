@@ -1,4 +1,4 @@
-
+![Screen Shot 2024-05-21 at 16 38](https://github.com/Sequence-94/CI-AWS/assets/53806574/724a6098-f77e-421f-8de2-8fb026d26229)
 ![Continous Integration On AWS Cloud](https://github.com/Sequence-94/CI-AWS/assets/53806574/9f4171fc-9b17-411a-bcfe-ad3b5d038c39)
 
 
@@ -108,9 +108,31 @@ I then switched to "security credentials" tab in order to create a security acce
   		"ssh -v git-codecommit.us-east-1.amazonaws.com"
     		For exmaple I can see which keys are being used, the config file being used.
 
-		put source code from github repo to codecommit repo and push
+		Push source code from github repo to codecommit repo and push:
+  		First I cloned the github repo to my local desktop:
+![Screen Shot 2024-05-21 at 16 32](https://github.com/Sequence-94/CI-AWS/assets/53806574/3ac098c3-3c59-4fee-82ca-d7639b5ce4fc)
+   
+I then removed the [remote "origin"] from github and relaced it with the one given to me in Clone URL -> CLone SSH in code commmit repo console.
+![Screen Shot 2024-05-21 at 16 36](https://github.com/Sequence-94/CI-AWS/assets/53806574/02c43b66-5ce7-4de1-87dd-d3ff35dbbb8a)
 
-	Code Artifcat
+After the "git push origin --all" command:
+![Screen Shot 2024-05-21 at 16 38](https://github.com/Sequence-94/CI-AWS/assets/53806574/d2c1aadf-c56c-45ab-8852-a37bfd01c210)
+All the files from github are now in my code commit repo
+
+
+	Code Artifcat - This is a repository in AWS used to store dependencies for build tools such as Maven. So instead of downlaoding dependencies from the internet , it will download them 			from AWS code artifact repository which is secure.
+ 	Creating a CodeArtifact in AWS console is fairly easy - I simply  gave it a meaningful name "vprofile-maven-repo"
+  	Pick my build tool from Public upstream repositories "maven-central-store"
+   	Select your account
+    	Entered a Domain name and left evrything else as default
+![Screen Shot 2024-05-22 at 06 24](https://github.com/Sequence-94/CI-AWS/assets/53806574/979f986d-4e3d-44ec-8188-de6ea35fad98)
+
+At this point I have two repositories, one for my code repository and another for maven dependencies repository:
+![Screen Shot 2024-05-22 at 06 29](https://github.com/Sequence-94/CI-AWS/assets/53806574/662f905d-00c4-4b69-a4c4-ee2a1cc09d22)
+
+		Now I need to make sure that my maven command connects to this specific repository.
+  		
+	
 		create an IAM user with code artifact access
 		install AWS cli , configure
 		export auth token
@@ -119,14 +141,45 @@ I then switched to "security credentials" tab in order to create a security acce
 
 	Sonar Cloud
 		create sonar cloud account
+![Screen Shot 2024-05-22 at 06 59](https://github.com/Sequence-94/CI-AWS/assets/53806574/b7784bbf-d912-44b4-9a37-064c28393e59)
+  
 		generate token
-		create ssm parameters with sonar details
+ Under MyAccount in Security Tab
+ ![Screen Shot 2024-05-22 at 07 02](https://github.com/Sequence-94/CI-AWS/assets/53806574/68be70de-08b7-4a83-b3e1-e8cacf44775f)
+
+  		Thereafter I created an organisation and gave it a unque name.
+    		Under that specific organisation I then created "Anaylze Projects" again I gave it a unique identifer.
+![Screen Shot 2024-05-22 at 07 16](https://github.com/Sequence-94/CI-AWS/assets/53806574/e7697448-a45c-47dd-baa1-a45515ca6ec6)
+I saved this information in my sticky notes for use later.
+      
+		create ssm parameters with sonar details - this is to prevent exposing my authentication tokens since I may not hardcode senstive information into my build_buildspec.yml file
+  		We can use Systems Manager in AWS to do this.
+![Screen Shot 2024-05-22 at 07 28](https://github.com/Sequence-94/CI-AWS/assets/53806574/c7844fe3-ce67-4a7c-8ee5-5dc6d44fd41a)
+ 
 		create build project
 		update codebuild tole to access SSMparameterstore
 	Create notifications for sns
 
-	Build Process
-		update pom.xml with artifact version with timestamp
+	Build Project - Using CodeBuild in AWS console
+		update pom.xml with artifact url - this tells maven where to fetch the dependencies
+![Screen Shot 2024-05-22 at 07 45](https://github.com/Sequence-94/CI-AWS/assets/53806574/f85938ef-a4e1-4bcd-9f13-8d37ad07ab36)
+
+This mirror configuration tells Maven to redirect all requests to the specified AWS CodeArtifact repository. Requets must go through this mirror.
+![Screen Shot 2024-05-22 at 07 53](https://github.com/Sequence-94/CI-AWS/assets/53806574/7edec5e1-7b6b-44a6-bbc1-3ca83a2307da)
+
+The three files —buildspec.yml, settings.xml, and pom.xml—are used together to manage the build, dependency management, and configuration of a Java project using AWS CodeBuild and Apache Maven.
+The buildspec file defines build instructions for AWS CB and includes commands that will be exec at each phase(install,pre_build,build). It also manages environment variables via SMPS.
+Below is a snippet:
+![Screen Shot 2024-05-22 at 08 06](https://github.com/Sequence-94/CI-AWS/assets/53806574/c98215fb-1da7-42e2-ab53-e520b724768e)
+
+The settings.xml configures Maven settings, including repository credentials and profiles. It ensures Maven can authenticate and access the required repositories, particularly AWS CodeArtifact.
+Below is a snippet:
+![Screen Shot 2024-05-22 at 08 07](https://github.com/Sequence-94/CI-AWS/assets/53806574/2eb397bc-95fd-4066-8a83-611771a2f53f)
+
+The pom.xml  which stands for Project Object Model file defines all project dependencies,plugins and where to find them. Below is a snipet:
+![Screen Shot 2024-05-22 at 08 11](https://github.com/Sequence-94/CI-AWS/assets/53806574/ec51f88b-ecf4-44fc-8511-fb0bacc94d74)
+
+  		version with timestamp
 		create variables in SSM => parameter store
 		create build project
 		update codebuild role to access SSMparameterstore
