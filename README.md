@@ -191,6 +191,9 @@ After doing some googling and research it it seems that was the quick fix.
 6th attempt: I tried upgrading to jdk17 and it seemed to have resolved the issue
 ![Screen Shot 2024-05-22 at 17 36](https://github.com/Sequence-94/CI-AWS/assets/53806574/d491f702-318c-46fb-ae8f-36859520cd07)
 
+The main idea was to upload the code analysis result to SonarCloud:
+![Screen Shot 2024-05-22 at 17 40](https://github.com/Sequence-94/CI-AWS/assets/53806574/f5db5e88-3cb4-4ce8-8f1b-6c1c972115ae)
+
   		version with timestamp
 		create variables in SSM => parameter store
 		create build project
