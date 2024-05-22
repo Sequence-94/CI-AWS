@@ -120,7 +120,19 @@ After the "git push origin --all" command:
 All the files from github are now in my code commit repo
 
 
-	Code Artifcat
+	Code Artifcat - This is a repository in AWS used to store dependencies for build tools such as Maven. So instead of downlaoding dependencies from the internet , it will download them 			from AWS code artifact repository which is secure.
+ 	Creating a CodeArtifact in AWS console is fairly easy - I simply  gave it a meaningful name "vprofile-maven-repo"
+  	Pick my build tool from Public upstream repositories "maven-central-store"
+   	Select your account
+    	Entered a Domain name and left evrything else as default
+![Screen Shot 2024-05-22 at 06 24](https://github.com/Sequence-94/CI-AWS/assets/53806574/979f986d-4e3d-44ec-8188-de6ea35fad98)
+
+At this point I have two repositories, one for my code repository and another for maven dependencies repository:
+![Screen Shot 2024-05-22 at 06 29](https://github.com/Sequence-94/CI-AWS/assets/53806574/662f905d-00c4-4b69-a4c4-ee2a1cc09d22)
+
+		Now I need to make sure that my maven command connects to this specific repository.
+  		
+	
 		create an IAM user with code artifact access
 		install AWS cli , configure
 		export auth token
@@ -135,7 +147,7 @@ All the files from github are now in my code commit repo
 		update codebuild tole to access SSMparameterstore
 	Create notifications for sns
 
-	Build Process
+	Build Project
 		update pom.xml with artifact version with timestamp
 		create variables in SSM => parameter store
 		create build project
