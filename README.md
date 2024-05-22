@@ -141,14 +141,45 @@ At this point I have two repositories, one for my code repository and another fo
 
 	Sonar Cloud
 		create sonar cloud account
+![Screen Shot 2024-05-22 at 06 59](https://github.com/Sequence-94/CI-AWS/assets/53806574/b7784bbf-d912-44b4-9a37-064c28393e59)
+  
 		generate token
-		create ssm parameters with sonar details
+ Under MyAccount in Security Tab
+ ![Screen Shot 2024-05-22 at 07 02](https://github.com/Sequence-94/CI-AWS/assets/53806574/68be70de-08b7-4a83-b3e1-e8cacf44775f)
+
+  		Thereafter I created an organisation and gave it a unque name.
+    		Under that specific organisation I then created "Anaylze Projects" again I gave it a unique identifer.
+![Screen Shot 2024-05-22 at 07 16](https://github.com/Sequence-94/CI-AWS/assets/53806574/e7697448-a45c-47dd-baa1-a45515ca6ec6)
+I saved this information in my sticky notes for use later.
+      
+		create ssm parameters with sonar details - this is to prevent exposing my authentication tokens since I may not hardcode senstive information into my build_buildspec.yml file
+  		We can use Systems Manager in AWS to do this.
+![Screen Shot 2024-05-22 at 07 28](https://github.com/Sequence-94/CI-AWS/assets/53806574/c7844fe3-ce67-4a7c-8ee5-5dc6d44fd41a)
+ 
 		create build project
 		update codebuild tole to access SSMparameterstore
 	Create notifications for sns
 
-	Build Project
-		update pom.xml with artifact version with timestamp
+	Build Project - Using CodeBuild in AWS console
+		update pom.xml with artifact url - this tells maven where to fetch the dependencies
+![Screen Shot 2024-05-22 at 07 45](https://github.com/Sequence-94/CI-AWS/assets/53806574/f85938ef-a4e1-4bcd-9f13-8d37ad07ab36)
+
+This mirror configuration tells Maven to redirect all requests to the specified AWS CodeArtifact repository. Requets must go through this mirror.
+![Screen Shot 2024-05-22 at 07 53](https://github.com/Sequence-94/CI-AWS/assets/53806574/7edec5e1-7b6b-44a6-bbc1-3ca83a2307da)
+
+The three files —buildspec.yml, settings.xml, and pom.xml—are used together to manage the build, dependency management, and configuration of a Java project using AWS CodeBuild and Apache Maven.
+The buildspec file defines build instructions for AWS CB and includes commands that will be exec at each phase(install,pre_build,build). It also manages environment variables via SMPS.
+Below is a snippet:
+![Screen Shot 2024-05-22 at 08 06](https://github.com/Sequence-94/CI-AWS/assets/53806574/c98215fb-1da7-42e2-ab53-e520b724768e)
+
+The settings.xml configures Maven settings, including repository credentials and profiles. It ensures Maven can authenticate and access the required repositories, particularly AWS CodeArtifact.
+Below is a snippet:
+![Screen Shot 2024-05-22 at 08 07](https://github.com/Sequence-94/CI-AWS/assets/53806574/2eb397bc-95fd-4066-8a83-611771a2f53f)
+
+The pom.xml  which stands for Project Object Model file defines all project dependencies,plugins and where to find them. Below is a snipet:
+![Screen Shot 2024-05-22 at 08 11](https://github.com/Sequence-94/CI-AWS/assets/53806574/ec51f88b-ecf4-44fc-8511-fb0bacc94d74)
+
+  		version with timestamp
 		create variables in SSM => parameter store
 		create build project
 		update codebuild role to access SSMparameterstore
