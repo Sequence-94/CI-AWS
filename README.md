@@ -179,6 +179,18 @@ Below is a snippet:
 The pom.xml  which stands for Project Object Model file defines all project dependencies,plugins and where to find them. Below is a snipet:
 ![Screen Shot 2024-05-22 at 08 11](https://github.com/Sequence-94/CI-AWS/assets/53806574/ec51f88b-ecf4-44fc-8511-fb0bacc94d74)
 
+ERROR:
+![Screen Shot 2024-05-22 at 09 41](https://github.com/Sequence-94/CI-AWS/assets/53806574/b351c15f-2df9-4d39-b010-71a9f68987ad)
+This error took the whole day to fix mainly due to the fact that the developer of the app had said that it only runs on jdk8 or 11 only so upgrading the Java version was not even an opeion I considred even though I was very much aware that would have been the simple fix but the app might not run.
+After doing some googling and research it it seems that was the quick fix. 
+1st attempt: I tried to add some dependencies and even force depricate dependecies but that did not work.
+2nd attempt: I switch from jdk11 to jdk8
+3rd attempt: I tried use the -e -x to see logs and errors but it was futile because the error was pretty much a compatibility issue
+4th attempt: I tried different version of sonar-mavin-plugin - ones that were comptaible with either jdk8 or jdk11 depending on which jdk i was attempting at the time
+5th attempt: tried changing maven6.0->7.0
+6th attempt: I tried upgrading to jdk17 and it seemed to have resolved the issue
+![Screen Shot 2024-05-22 at 17 36](https://github.com/Sequence-94/CI-AWS/assets/53806574/d491f702-318c-46fb-ae8f-36859520cd07)
+
   		version with timestamp
 		create variables in SSM => parameter store
 		create build project
