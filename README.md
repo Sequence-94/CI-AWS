@@ -198,7 +198,19 @@ The main idea was to upload the code analysis result to SonarCloud:
 		create variables in SSM => parameter store
 		create build project
 		update codebuild role to access SSMparameterstore
-		
+
+Previously we built for analysis and to retireve dependencies from codeartifact.
+Now we run a build process to build our artifact from previous build , below is a snippet of the build yml file.
+![Screen Shot 2024-05-23 at 10 58](https://github.com/Sequence-94/CI-AWS/assets/53806574/b64d0695-7e58-4fd1-8ab9-f4b0930dd1b3)
+
+This build will need permission to to codeartifact so we need to change the policy like below:
+![Screen Shot 2024-05-23 at 11 07](https://github.com/Sequence-94/CI-AWS/assets/53806574/4a56effb-94a7-453d-8fae-9479c245b53f)
+
+ERROR:
+![Screen Shot 2024-05-23 at 11 11](https://github.com/Sequence-94/CI-AWS/assets/53806574/20043302-c9a2-4691-9311-404bf89fbc54)
+This indicates the build process is unable to locate the build_buildspec.yml file inside the aws-files, so I resolved it by placing the build file in the root path.
+![Screen Shot 2024-05-23 at 11 43](https://github.com/Sequence-94/CI-AWS/assets/53806574/5419d718-a444-40ed-8134-e32a2f5136a8)
+
 	Create Pipeline
 		codecommit
 		testcode
