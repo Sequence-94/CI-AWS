@@ -227,6 +227,32 @@ Confirm subscription.
      	The Build Provider can be Jenkins but we have been using CodeBuil for this project.
 ![Screen Shot 2024-05-23 at 12 07](https://github.com/Sequence-94/CI-AWS/assets/53806574/cd91694c-b6d6-43f7-87fd-883125077c7e)
 
+In my pipeline I g=have these stages:
+
+This stage will success if there is a codecommit and will trigger all subsequent stages
+![Screen Shot 2024-05-23 at 12 24](https://github.com/Sequence-94/CI-AWS/assets/53806574/13e2d808-12ff-41a6-8351-552ee70b9ef1)
+
+
+This is the analysis stage and gete dependencies from codeArticat and will be triggered by the previous stage to run analysis in SonarCloud and if it passes the tests it will succeed and trigger the next stage
+![Screen Shot 2024-05-23 at 12 24 - 2](https://github.com/Sequence-94/CI-AWS/assets/53806574/6572a765-a82b-48f3-a636-d7bf3f37dd22)
+
+
+
+The next stage is the buildstage and will run CodeBuild in particular the one that builds the artifacts and if it is successful it will deploy our entire artifact to an S3 bucket
+which is a stage on its own.
+![Screen Shot 2024-05-23 at 12 24 - 4](https://github.com/Sequence-94/CI-AWS/assets/53806574/44ca2b52-a5dd-4ff7-b8da-6cad187c95c9)
+
+
+Last but not least we need to create notifications from our pipeline. I gave it a name and then chose to trigger notifications for ALL events and the target will be the SNS topic I created previously.
+![Screen Shot 2024-05-23 at 12 31](https://github.com/Sequence-94/CI-AWS/assets/53806574/ba1839ec-318a-4683-b0bc-56b1c4b3d9ea)
+
+
+Running Pipeline:
+![Screen Shot 2024-05-23 at 12 49](https://github.com/Sequence-94/CI-AWS/assets/53806574/169532b0-5caf-4c0f-a950-b21399ea7fe0)
+
+The artifact has been deployed to S3 after running the pipeline:
+![Screen Shot 2024-05-23 at 12 47](https://github.com/Sequence-94/CI-AWS/assets/53806574/68469dfd-cbaf-4745-9d71-7c930e01e95e)
+
 
 		codecommit
 		testcode
