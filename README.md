@@ -211,7 +211,10 @@ ERROR:
 This indicates the build process is unable to locate the build_buildspec.yml file inside the aws-files, so I resolved it by placing the build file in the root path.
 ![Screen Shot 2024-05-23 at 11 43](https://github.com/Sequence-94/CI-AWS/assets/53806574/5419d718-a444-40ed-8134-e32a2f5136a8)
 
-	Create Pipeline
+	Create Pipeline - lets tie everything up:
+ First create an S3 bucket with a folder in which we will store the artifacts:
+ ![Screen Shot 2024-05-23 at 11 50](https://github.com/Sequence-94/CI-AWS/assets/53806574/d7a108f9-8e2f-4488-bce7-88977ebba07a)
+
 		codecommit
 		testcode
 		build
