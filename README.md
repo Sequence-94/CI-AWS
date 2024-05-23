@@ -179,12 +179,81 @@ Below is a snippet:
 The pom.xml  which stands for Project Object Model file defines all project dependencies,plugins and where to find them. Below is a snipet:
 ![Screen Shot 2024-05-22 at 08 11](https://github.com/Sequence-94/CI-AWS/assets/53806574/ec51f88b-ecf4-44fc-8511-fb0bacc94d74)
 
+ERROR:
+![Screen Shot 2024-05-22 at 09 41](https://github.com/Sequence-94/CI-AWS/assets/53806574/b351c15f-2df9-4d39-b010-71a9f68987ad)
+This error took the whole day to fix mainly due to the fact that the developer of the app had said that it only runs on jdk8 or 11 only so upgrading the Java version was not even an opeion I considred even though I was very much aware that would have been the simple fix but the app might not run.
+After doing some googling and research it it seems that was the quick fix. 
+1st attempt: I tried to add some dependencies and even force depricate dependecies but that did not work.
+2nd attempt: I switch from jdk11 to jdk8
+3rd attempt: I tried use the -e -x to see logs and errors but it was futile because the error was pretty much a compatibility issue
+4th attempt: I tried different version of sonar-mavin-plugin - ones that were comptaible with either jdk8 or jdk11 depending on which jdk i was attempting at the time
+5th attempt: tried changing maven6.0->7.0
+6th attempt: I tried upgrading to jdk17 and it seemed to have resolved the issue
+![Screen Shot 2024-05-22 at 17 36](https://github.com/Sequence-94/CI-AWS/assets/53806574/d491f702-318c-46fb-ae8f-36859520cd07)
+
+The main idea was to upload the code analysis result to SonarCloud:
+![Screen Shot 2024-05-22 at 17 40](https://github.com/Sequence-94/CI-AWS/assets/53806574/f5db5e88-3cb4-4ce8-8f1b-6c1c972115ae)
+
   		version with timestamp
 		create variables in SSM => parameter store
 		create build project
 		update codebuild role to access SSMparameterstore
-		
-	Create Pipeline
+
+Previously we built for analysis and to retireve dependencies from codeartifact.
+Now we run a build process to build our artifact from previous build , below is a snippet of the build yml file.
+![Screen Shot 2024-05-23 at 10 58](https://github.com/Sequence-94/CI-AWS/assets/53806574/b64d0695-7e58-4fd1-8ab9-f4b0930dd1b3)
+
+This build will need permission to to codeartifact so we need to change the policy like below:
+![Screen Shot 2024-05-23 at 11 07](https://github.com/Sequence-94/CI-AWS/assets/53806574/4a56effb-94a7-453d-8fae-9479c245b53f)
+
+ERROR:
+![Screen Shot 2024-05-23 at 11 11](https://github.com/Sequence-94/CI-AWS/assets/53806574/20043302-c9a2-4691-9311-404bf89fbc54)
+This indicates the build process is unable to locate the build_buildspec.yml file inside the aws-files, so I resolved it by placing the build file in the root path.
+![Screen Shot 2024-05-23 at 11 43](https://github.com/Sequence-94/CI-AWS/assets/53806574/5419d718-a444-40ed-8134-e32a2f5136a8)
+
+	Create Pipeline - lets tie everything up:
+ First create an S3 bucket with a folder in which we will store the artifacts:
+ ![Screen Shot 2024-05-23 at 11 50](https://github.com/Sequence-94/CI-AWS/assets/53806574/d7a108f9-8e2f-4488-bce7-88977ebba07a)
+
+	Second create an SNS topic then create a subsprition with your email as the protocol.
+![Screen Shot 2024-05-23 at 11 54](https://github.com/Sequence-94/CI-AWS/assets/53806574/746160dd-498c-4e93-97d6-124d790fb430)
+Confirm subscription.
+
+	Third- Create Pipeline
+ 	Give it a name, the default service role will suffice.
+  	Give your "CodeCommit" repository as the source provider -  because it is to observe the commit, whenever the developer makes a commit
+   	the pipeline will detect and trigger the pipeline.
+    	Pick CloudWatch Events so that it triggers when theres a commit as opposed to periodiclly checking for changes even though there might not be any.
+     	The Build Provider can be Jenkins but we have been using CodeBuil for this project.
+![Screen Shot 2024-05-23 at 12 07](https://github.com/Sequence-94/CI-AWS/assets/53806574/cd91694c-b6d6-43f7-87fd-883125077c7e)
+
+In my pipeline I g=have these stages:
+
+This stage will success if there is a codecommit and will trigger all subsequent stages
+![Screen Shot 2024-05-23 at 12 24](https://github.com/Sequence-94/CI-AWS/assets/53806574/13e2d808-12ff-41a6-8351-552ee70b9ef1)
+
+
+This is the analysis stage and gete dependencies from codeArticat and will be triggered by the previous stage to run analysis in SonarCloud and if it passes the tests it will succeed and trigger the next stage
+![Screen Shot 2024-05-23 at 12 24 - 2](https://github.com/Sequence-94/CI-AWS/assets/53806574/6572a765-a82b-48f3-a636-d7bf3f37dd22)
+
+
+
+The next stage is the buildstage and will run CodeBuild in particular the one that builds the artifacts and if it is successful it will deploy our entire artifact to an S3 bucket
+which is a stage on its own.
+![Screen Shot 2024-05-23 at 12 24 - 4](https://github.com/Sequence-94/CI-AWS/assets/53806574/44ca2b52-a5dd-4ff7-b8da-6cad187c95c9)
+
+
+Last but not least we need to create notifications from our pipeline. I gave it a name and then chose to trigger notifications for ALL events and the target will be the SNS topic I created previously.
+![Screen Shot 2024-05-23 at 12 31](https://github.com/Sequence-94/CI-AWS/assets/53806574/ba1839ec-318a-4683-b0bc-56b1c4b3d9ea)
+
+
+Running Pipeline:
+![Screen Shot 2024-05-23 at 12 49](https://github.com/Sequence-94/CI-AWS/assets/53806574/169532b0-5caf-4c0f-a950-b21399ea7fe0)
+
+The artifact has been deployed to S3 after running the pipeline:
+![Screen Shot 2024-05-23 at 12 47](https://github.com/Sequence-94/CI-AWS/assets/53806574/68469dfd-cbaf-4745-9d71-7c930e01e95e)
+
+
 		codecommit
 		testcode
 		build
