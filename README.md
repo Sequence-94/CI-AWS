@@ -225,8 +225,8 @@ Confirm subscription.
    	the pipeline will detect and trigger the pipeline.
     	Pick CloudWatch Events so that it triggers when theres a commit as opposed to periodiclly checking for changes even though there might not be any.
      	The Build Provider can be Jenkins but we have been using CodeBuil for this project.
-![Uploading Screen Shot 2024-05-23 at 12.07.png…]()
-  	
+![Screen Shot 2024-05-23 at 12 07](https://github.com/Sequence-94/CI-AWS/assets/53806574/cd91694c-b6d6-43f7-87fd-883125077c7e)
+
 
 		codecommit
 		testcode
