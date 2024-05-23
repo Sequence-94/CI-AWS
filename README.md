@@ -215,6 +215,19 @@ This indicates the build process is unable to locate the build_buildspec.yml fil
  First create an S3 bucket with a folder in which we will store the artifacts:
  ![Screen Shot 2024-05-23 at 11 50](https://github.com/Sequence-94/CI-AWS/assets/53806574/d7a108f9-8e2f-4488-bce7-88977ebba07a)
 
+	Second create an SNS topic then create a subsprition with your email as the protocol.
+![Screen Shot 2024-05-23 at 11 54](https://github.com/Sequence-94/CI-AWS/assets/53806574/746160dd-498c-4e93-97d6-124d790fb430)
+Confirm subscription.
+
+	Third- Create Pipeline
+ 	Give it a name, the default service role will suffice.
+  	Give your "CodeCommit" repository as the source provider -  because it is to observe the commit, whenever the developer makes a commit
+   	the pipeline will detect and trigger the pipeline.
+    	Pick CloudWatch Events so that it triggers when theres a commit as opposed to periodiclly checking for changes even though there might not be any.
+     	The Build Provider can be Jenkins but we have been using CodeBuil for this project.
+![Uploading Screen Shot 2024-05-23 at 12.07.png…]()
+  	
+
 		codecommit
 		testcode
 		build
